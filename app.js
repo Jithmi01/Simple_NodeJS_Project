@@ -5,8 +5,11 @@ require('dotenv').config()
 const express = require ('express');
 const bodyParser = require('body-parser');
 const customerRoute = require('./customerRoute');
+const mongoose = require('mongoose');
+const { error } = require('console');
 
 const PORT = process.env.PORT;
+const MONGO_URI=process.env.MONGO_URI;
 
 const app = express();
 
@@ -17,6 +20,14 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 // parser application/json
 app.use(bodyParser.json())
+
+// ============
+mongoose.connect(MONGO_URI).then(()=>{
+    console.log('MongoDB Connected..');
+}).catch((error)=>{
+    console.log(error);
+
+})
 
 // =============
 app.use('/customers',customerRoute);
